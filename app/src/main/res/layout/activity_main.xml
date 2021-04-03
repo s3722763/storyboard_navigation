@@ -14,7 +14,7 @@
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="628dp"
         android:onClick="openStoryboardView"
-        android:text="Button"
+        android:text="Walk then Tram Route"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

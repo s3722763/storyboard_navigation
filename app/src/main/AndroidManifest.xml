@@ -24,7 +24,6 @@
             android:name=".storyboard_view_activity"
             android:label="@string/title_activity_storyboard_view_activity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

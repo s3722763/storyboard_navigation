@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -27,12 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
         runner.executeAsync(new GetAllRoutesTask(), (data) -> {
             routes = data.getResponseObject();
-
         });
     }
 
     public void openStoryboardView(View view) {
+        Button button_pushed = (Button)view;
+        CharSequence text = button_pushed.getText();
+
+        Log.i("storyboard_navi_msg", "Pushed button with text " + text);
+
         Intent intent = new Intent(MainActivity.this, storyboard_view_activity.class);
-        this.startActivity(intent );
+        intent.putExtra("route_name", text);
+        this.startActivity(intent);
     }
 }
