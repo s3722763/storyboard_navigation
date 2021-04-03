@@ -2,8 +2,10 @@ package au.edu.rmit.storyboard_navigation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -27,5 +29,10 @@ public class MainActivity extends AppCompatActivity {
             routes = data.getResponseObject();
 
         });
+    }
+
+    public void openStoryboardView(View view) {
+        Intent intent = new Intent(MainActivity.this, storyboard_view_activity.class);
+        this.startActivity(intent );
     }
 }
