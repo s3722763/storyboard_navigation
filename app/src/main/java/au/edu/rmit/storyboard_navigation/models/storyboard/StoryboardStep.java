@@ -9,4 +9,12 @@ public abstract class StoryboardStep {
         this.step_number = step_number;
         this.pictogram_resource_id = pictogram_resource_id;
     }
+
+    public int get_pictogram_resource_id() {
+        return this.pictogram_resource_id;
+    }
+
+    public String get_details() {
+        return this.details;
+    }
 }
