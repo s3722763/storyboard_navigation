@@ -15,7 +15,8 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:background="@color/purple_200">
 
         <TextView
             android:id="@+id/step_number_first"

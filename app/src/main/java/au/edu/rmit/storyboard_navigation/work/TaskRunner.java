@@ -1,11 +1,10 @@
-package au.edu.rmit.storyboard_navigation.task;
+package au.edu.rmit.storyboard_navigation.work;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

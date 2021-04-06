@@ -1,8 +1,8 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
 public abstract class StoryboardStep {
-    int step_number;
-    int pictogram_resource_id;
+    final int step_number;
+    final int pictogram_resource_id;
     String details;
 
     protected StoryboardStep(int step_number, int pictogram_resource_id) {
@@ -16,5 +16,9 @@ public abstract class StoryboardStep {
 
     public String get_details() {
         return this.details;
+    }
+
+    public int get_step_number() {
+        return this.step_number;
     }
 }

@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import java.util.List;
 
 import au.edu.rmit.storyboard_navigation.models.tramtracker.RouteInfo;
-import au.edu.rmit.storyboard_navigation.task.GetAllRoutesTask;
-import au.edu.rmit.storyboard_navigation.task.TaskRunner;
+import au.edu.rmit.storyboard_navigation.work.GetAllRoutesTask;
+import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 
 public class MainActivity extends AppCompatActivity {
     List<RouteInfo> routes = null;
