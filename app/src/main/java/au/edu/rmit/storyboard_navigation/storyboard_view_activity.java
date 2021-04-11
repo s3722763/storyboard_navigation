@@ -81,6 +81,7 @@ public class storyboard_view_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_storyboard_view_activity);
 
         this.update();
