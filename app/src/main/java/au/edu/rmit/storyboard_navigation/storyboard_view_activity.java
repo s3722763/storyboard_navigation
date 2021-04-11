@@ -29,6 +29,7 @@ import au.edu.rmit.storyboard_navigation.models.storyboard.TouchOnMykiStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitOnTramStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WalkingStep;
+import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
 public class storyboard_view_activity extends AppCompatActivity {
@@ -72,10 +73,12 @@ public class storyboard_view_activity extends AppCompatActivity {
     Handler handler;
     UpdateStoryboardView updateStoryboardView;
     int counter = 0;
+    TaskRunner taskRunner;
 
     public storyboard_view_activity() {
         this.handler = new Handler();
         this.updateStoryboardView = new UpdateStoryboardView(this);
+        taskRunner = new TaskRunner();
     }
 
     @Override

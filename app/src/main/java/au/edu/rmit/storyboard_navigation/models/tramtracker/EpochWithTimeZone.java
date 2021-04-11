@@ -21,4 +21,8 @@ public class EpochWithTimeZone {
         this.datetime = Instant.ofEpochMilli(epoch).atZone(ZoneId.of(parts[1]));
         //System.out.println(datetime.toString());
     }
+
+    public ZonedDateTime getDatetime() {
+        return this.datetime;
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import java.util.List;
 
 import au.edu.rmit.storyboard_navigation.models.tramtracker.RouteInfo;
+import au.edu.rmit.storyboard_navigation.work.ArrivalPredictionTask;
 import au.edu.rmit.storyboard_navigation.work.GetAllRoutesTask;
 import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 
@@ -21,7 +22,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getSupportActionBar().hide();
+       // test();
         setContentView(R.layout.activity_main);
+    }
+
+    public void test() {
+        TaskRunner runner = new TaskRunner();
+
+        runner.executeAsync(new ArrivalPredictionTask(1555, 0), (data) -> {
+            Log.i("aaa", String.valueOf(data.getResponseObject().get(0).getVehicleNo()));
+        });
     }
 
     public void sendMessage(View view) {
