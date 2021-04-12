@@ -24,7 +24,7 @@ public class UpdateStoryboardView implements Runnable {
         storyboard_view_activity activity = this.activity.get();
 
         if (activity != null) {
-            activity.update();
+            activity.update(true);
         }
     }
 }

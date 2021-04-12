@@ -7,4 +7,9 @@ public class PressStopButtonStep extends StoryboardStep {
     public PressStopButtonStep(int step_number) {
         super(step_number, R.drawable.pressstopbuttonpictogram, "Press the stop button to request stop");
     }
+
+    @Override
+    public void update(TaskRunner taskRunner) {
+        return;
+    }
 }

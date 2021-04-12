@@ -24,4 +24,6 @@ public abstract class StoryboardStep {
     public int get_step_number() {
         return this.step_number;
     }
+
+    public abstract void update(TaskRunner taskRunner);
 }

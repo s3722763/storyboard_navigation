@@ -3,6 +3,7 @@ package au.edu.rmit.storyboard_navigation;
 import android.os.Bundle;
 import android.os.Handler;
 import android.service.autofill.CharSequenceTransformation;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -17,6 +18,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import au.edu.rmit.storyboard_navigation.models.storyboard.CrossRoadStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.CrossRoadToStopStep;
@@ -29,6 +33,7 @@ import au.edu.rmit.storyboard_navigation.models.storyboard.TouchOnMykiStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitOnTramStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WalkingStep;
+import au.edu.rmit.storyboard_navigation.work.ArrivalPredictionTask;
 import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
@@ -37,7 +42,7 @@ public class storyboard_view_activity extends AppCompatActivity {
             new WalkingStep(1),
             new CrossRoadStep(2),
             new CrossRoadToStopStep(3),
-            new WaitStep(4),
+            new WaitStep(4, 1555, 0),
             new GetOnTramStep(5),
             new TouchOnMykiStep(6),
             new WaitOnTramStep(7),
@@ -74,11 +79,15 @@ public class storyboard_view_activity extends AppCompatActivity {
     UpdateStoryboardView updateStoryboardView;
     int counter = 0;
     TaskRunner taskRunner;
+    ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+    Timer timer;
 
     public storyboard_view_activity() {
         this.handler = new Handler();
         this.updateStoryboardView = new UpdateStoryboardView(this);
         taskRunner = new TaskRunner();
+        scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
+        timer = new Timer();
     }
 
     @Override
@@ -87,10 +96,10 @@ public class storyboard_view_activity extends AppCompatActivity {
         this.getSupportActionBar().hide();
         setContentView(R.layout.activity_storyboard_view_activity);
 
-        this.update();
+        this.update(false);
     }
 
-    public void update() {
+    public void update(boolean increment) {
         Log.i("SBUpdate", "Updating");
 
         for (int i = 0; i < pictogram_ids.length; i++) {
@@ -111,16 +120,30 @@ public class storyboard_view_activity extends AppCompatActivity {
             }
         }
 
-        //this.handler.postDelayed(updateStoryboardView, 1000);
-        counter += 1;
+        if (increment) {
+            //this.handler.postDelayed(updateStoryboardView, 1000);
+            counter += 1;
+        }
+
+        scheduledThreadPoolExecutor.schedule(timer, 5, TimeUnit.SECONDS);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.update();
+            this.update(true);
         }
 
         return false;
+    }
+
+    private class Timer implements Runnable {
+        @Override
+        public void run() {
+            for (StoryboardStep step : steps) {
+                step.update(taskRunner);
+            }
+            update(false);
+        }
     }
 }

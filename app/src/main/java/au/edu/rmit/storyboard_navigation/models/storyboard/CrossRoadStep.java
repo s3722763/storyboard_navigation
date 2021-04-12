@@ -7,4 +7,9 @@ public class CrossRoadStep extends StoryboardStep {
     public CrossRoadStep(int step_number) {
         super(step_number, R.drawable.crossroadpictogram, "Cross the road");
     }
+
+    @Override
+    public void update(TaskRunner taskRunner) {
+        return;
+    }
 }

@@ -7,4 +7,9 @@ public class GetOnTramStep extends StoryboardStep {
     public GetOnTramStep(int step_number) {
         super(step_number, R.drawable.getontrampictogram, "Get on tram %d");
     }
+
+    @Override
+    public void update(TaskRunner taskRunner) {
+        return;
+    }
 }

@@ -7,4 +7,9 @@ public class WaitOnTramStep extends StoryboardStep {
     public WaitOnTramStep(int step_number) {
         super(step_number, R.drawable.waitontrampictogram, "Stay on stop until stop %d");
     }
+
+    @Override
+    public void update(TaskRunner taskRunner) {
+        return;
+    }
 }
