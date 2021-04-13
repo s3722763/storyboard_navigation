@@ -1,7 +1,5 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
-import au.edu.rmit.storyboard_navigation.work.TaskRunner;
-
 public abstract class StoryboardStep {
     final int step_number;
     final int pictogram_resource_id;
@@ -25,5 +23,5 @@ public abstract class StoryboardStep {
         return this.step_number;
     }
 
-    public abstract void update(TaskRunner taskRunner);
+    public abstract void update();
 }

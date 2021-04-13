@@ -2,6 +2,7 @@ package au.edu.rmit.storyboard_navigation.work;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;

@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     public void test() {
         TaskRunner runner = new TaskRunner();
 
-        runner.executeAsync(new ArrivalPredictionTask(1555, 0), (data) -> {
+        /*runner.executeAsync(new ArrivalPredictionTask(1555, 0), (data) -> {
             Log.i("aaa", String.valueOf(data.getResponseObject().get(0).getVehicleNo()));
-        });
+        });*/
     }
 
     public void sendMessage(View view) {

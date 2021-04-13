@@ -1,7 +1,6 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
 import au.edu.rmit.storyboard_navigation.R;
-import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 
 public class WalkingStep extends StoryboardStep {
     public WalkingStep(int step_number) {
@@ -10,7 +9,7 @@ public class WalkingStep extends StoryboardStep {
 
 
     @Override
-    public void update(TaskRunner taskRunner) {
+    public void update() {
         return;
     }
 }

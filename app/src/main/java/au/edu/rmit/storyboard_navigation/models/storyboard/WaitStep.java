@@ -5,11 +5,12 @@ import android.util.Log;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 import au.edu.rmit.storyboard_navigation.R;
 import au.edu.rmit.storyboard_navigation.models.tramtracker.ArrivalPrediction;
+import au.edu.rmit.storyboard_navigation.models.tramtracker.TramTrackerResponse;
 import au.edu.rmit.storyboard_navigation.work.ArrivalPredictionTask;
-import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 
 public class WaitStep extends StoryboardStep {
     private int stopNo;
@@ -35,10 +36,12 @@ public class WaitStep extends StoryboardStep {
     }
 
     @Override
-    public void update(TaskRunner taskRunner) {
-        taskRunner.executeAsync(new ArrivalPredictionTask(this.stopNo, this.routeNo), (data) -> {
-            this.arrivalPrediction = data.getResponseObject().get(0);
-            Log.i("aaa", String.valueOf(this.arrivalPrediction.getVehicleNo()));
-        });
+    public void update() {
+        ArrivalPredictionTask task = new ArrivalPredictionTask(this.stopNo, this.routeNo);
+
+        TramTrackerResponse<ArrayList<ArrivalPrediction>> data = task.get();
+
+        arrivalPrediction = data.getResponseObject().get(0);
+        Log.i("aaa", String.valueOf(arrivalPrediction.getVehicleNo()));
     }
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 import au.edu.rmit.storyboard_navigation.models.tramtracker.ArrivalPrediction;
 import au.edu.rmit.storyboard_navigation.models.tramtracker.TramTrackerResponse;
 
-public class ArrivalPredictionTask implements Callable<TramTrackerResponse<ArrayList<ArrivalPrediction>>> {
+public class ArrivalPredictionTask {
     private final int stopNo;
     private final int routeNo;
     private final String base_url = "http://tramtracker.com.au/Controllers/GetNextPredictionsForStop.ashx?stopNo=%d&routeNo=%d&isLowFloor=false";
@@ -46,10 +46,5 @@ public class ArrivalPredictionTask implements Callable<TramTrackerResponse<Array
 
 
         return null;
-    }
-
-    @Override
-    public TramTrackerResponse<ArrayList<ArrivalPrediction>> call() throws Exception {
-        return get();
     }
 }
