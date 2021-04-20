@@ -57,17 +57,21 @@ import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
 public class storyboard_view_activity extends AppCompatActivity {
+    // Route 30 stop 10 is stopID 3660
     private List<StoryboardStep> steps = new ArrayList<StoryboardStep>(Arrays.asList(
             new WalkingStep(1),
-            new CrossRoadStep(2),
-            new CrossRoadToStopStep(3),
-            new WaitStep(4, 1555, 0),
-            new GetOnTramStep(5, 1),
-            new TouchOnMykiStep(6),
-            new WaitOnTramStep(7, 1),
-            new PressStopButtonStep(8),
+            new WalkingStep(2),
+            new CrossRoadStep(3),
+            new CrossRoadToStopStep(4),
+            new WaitStep(5, 3660, 30),
+            new GetOnTramStep(6, 30),
+            new TouchOnMykiStep(7),
+            new WaitOnTramStep(8, 30),
             new TouchOffMykiStep(9),
-            new GetOffTramStep(10)
+            new GetOffTramStep(10),
+            new WalkingStep(11),
+            new CrossRoadStep(12),
+            new WalkingStep(13)
     ));
 
     private final int[] step_number_ids = {
