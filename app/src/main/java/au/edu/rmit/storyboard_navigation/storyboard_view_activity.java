@@ -1,15 +1,40 @@
 package au.edu.rmit.storyboard_navigation;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,19 +79,27 @@ public class storyboard_view_activity extends AppCompatActivity {
     };
 
     private final int[] pictogram_ids = {
-        R.id.pictogram_first,
-        R.id.pictogram_second,
-        R.id.pictogram_third,
-        R.id.pictogram_fourth,
-        R.id.pictogram_fifth
+            R.id.pictogram_first,
+            R.id.pictogram_second,
+            R.id.pictogram_third,
+            R.id.pictogram_fourth,
+            R.id.pictogram_fifth
+    };
+
+    private final int[] exit_button_ids = {
+            R.id.exit_button_1,
+            R.id.exit_button_2,
+            R.id.exit_button_3,
+            R.id.exit_button_4,
+            R.id.exit_button_5,
     };
 
     private final int step_description_ids[] = {
-        R.id.step_description_first,
-        R.id.step_description_second,
-        R.id.step_description_third,
-        R.id.step_description_fourth,
-        R.id.step_description_fifth
+            R.id.step_description_first,
+            R.id.step_description_second,
+            R.id.step_description_third,
+            R.id.step_description_fourth,
+            R.id.step_description_fifth
     };
 
     Handler handler;
@@ -75,6 +108,10 @@ public class storyboard_view_activity extends AppCompatActivity {
     TaskRunner taskRunner;
     ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     Timer timer;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location currentLocation;
 
     public storyboard_view_activity() {
         this.handler = new Handler();
@@ -92,12 +129,13 @@ public class storyboard_view_activity extends AppCompatActivity {
         scheduledThreadPoolExecutor.scheduleAtFixedRate(timer, 5, 5, TimeUnit.SECONDS);
         setContentView(R.layout.activity_storyboard_view_activity);
 
-        TextView view  = (TextView)this.findViewById(R.id.destination_text_id);
+        TextView view = (TextView) this.findViewById(R.id.destination_text_id);
         view.setText(this.getIntent().getCharSequenceExtra("route_name"));
 
-        ImageButton button = (ImageButton)this.findViewById(R.id.back_button_id);
-        button.setImageResource(R.drawable.arrow);
+        ImageButton exit_arrow_button = (ImageButton) this.findViewById(R.id.back_button_id);
+        exit_arrow_button.setImageResource(R.drawable.arrow);
 
+        setupLocation();
         this.update(false);
     }
 
@@ -133,6 +171,13 @@ public class storyboard_view_activity extends AppCompatActivity {
             }
         }
 
+        boolean display_end_button = true;
+
+        for (int id : this.exit_button_ids) {
+            View view = this.findViewById(id);
+            view.setVisibility(View.GONE);
+        }
+
         for (int i = 0; i < pictogram_ids.length; i++) {
             TextView stepNumberTextView = (TextView) this.findViewById(step_number_ids[i]);
             ImageView imageView = (ImageView) this.findViewById(pictogram_ids[i]);
@@ -148,6 +193,9 @@ public class storyboard_view_activity extends AppCompatActivity {
                 stepNumberTextView.setText("");
                 imageView.setImageResource(0);
                 stepDescriptionTextView.setText("");
+                LinearLayout parent = (LinearLayout) stepNumberTextView.getParent();
+                parent.setBackground(null);
+
             }
         }
     }
@@ -163,6 +211,59 @@ public class storyboard_view_activity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    void setupLocation() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                // Can initialize location requests
+                Log.i("SBN-Location", "Can initiate location requests");
+            }
+        });
+
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings not satisfied but can be fixed
+                    Log.e("SBN-Location", "Incorrect location settings");
+                }
+            }
+        });
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("SBN-Location", "Incorrect permissions for location");
+            return;
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+
+                for (Location location : locationResult.getLocations()) {
+                    Log.i("SBN-Location", "Latitude: " + location.getLatitude() + "\tLongitude: " + location.getLongitude() + "\tAccuracy: " + location.getAccuracy());
+                    currentLocation = location;
+                }
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
     private class Timer implements Runnable {

@@ -3,11 +3,14 @@
     package="au.edu.rmit.storyboard_navigation">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!--
+        When using android 30 and higher    -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,6 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="NavigationService"
+            android:foregroundServiceType="location">
+        </service>
     </application>
 
 </manifest>
