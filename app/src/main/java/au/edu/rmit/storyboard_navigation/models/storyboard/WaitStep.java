@@ -1,5 +1,6 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
+import android.location.Location;
 import android.util.Log;
 
 import java.time.Duration;
@@ -17,8 +18,8 @@ public class WaitStep extends StoryboardStep {
     private int routeNo;
     private ArrivalPrediction arrivalPrediction;
 
-    public WaitStep(int step_number, int stopNo, int routeNo) {
-        super(step_number, R.drawable.waitpictogram, "Wait %d minutes for tram %d");
+    public WaitStep(int step_number, int stopNo, int routeNo, Location location) {
+        super(step_number, R.drawable.waitpictogram, "Wait %d minutes for tram %d", location);
         this.stopNo = stopNo;
         this.routeNo = routeNo;
     }

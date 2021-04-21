@@ -58,21 +58,7 @@ import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
 public class storyboard_view_activity extends AppCompatActivity {
     // Route 30 stop 10 is stopID 3660
-    private List<StoryboardStep> steps = new ArrayList<StoryboardStep>(Arrays.asList(
-            new WalkingStep(1),
-            new WalkingStep(2),
-            new CrossRoadStep(3),
-            new CrossRoadToStopStep(4),
-            new WaitStep(5, 3660, 30),
-            new GetOnTramStep(6, 30),
-            new TouchOnMykiStep(7),
-            new WaitOnTramStep(8, 30),
-            new TouchOffMykiStep(9),
-            new GetOffTramStep(10),
-            new WalkingStep(11),
-            new CrossRoadStep(12),
-            new WalkingStep(13)
-    ));
+    private List<StoryboardStep> steps;
 
     private final int[] step_number_ids = {
             R.id.step_number_first,
@@ -123,6 +109,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         taskRunner = new TaskRunner();
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
         timer = new Timer();
+        setupSteps();
     }
 
     @Override
@@ -269,6 +256,76 @@ public class storyboard_view_activity extends AppCompatActivity {
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
+
+    private void setupSteps() {
+        steps = new ArrayList<StoryboardStep>(13);
+
+        Location step1Location = new Location("");
+        step1Location.setLatitude(-37.804507);
+        step1Location.setLongitude(144.973703);
+        steps.add(new WalkingStep(1, step1Location));
+
+        Location step2Location = new Location("");
+        step2Location.setLatitude(-37.807688);
+        step2Location.setLongitude(144.973124);
+        steps.add(new WalkingStep(2, step2Location));
+
+        Location step3Location = new Location("");
+        step3Location.setLatitude(-37.807715);
+        step3Location.setLongitude(144.973349);
+        steps.add(new CrossRoadStep(3, step3Location));
+
+        Location step4Location = new Location("");
+        step4Location.setLatitude(-37.807989);
+        step4Location.setLongitude(144.973632);
+         steps.add(new CrossRoadToStopStep(4, step4Location));
+
+        Location step5Location = new Location("");
+        step5Location.setLatitude(0.0);
+        step5Location.setLongitude(0.0);
+        steps.add(new WaitStep(5, 3660, 30, step5Location));
+
+        Location step6Location = new Location("");
+        step6Location.setLatitude(0.0);
+        step6Location.setLongitude(0.0);
+        steps.add(new GetOnTramStep(6, 30, step6Location));
+
+        Location step7Location = new Location("");
+        step7Location.setLatitude(0.0);
+        step7Location.setLongitude(0.0);
+        steps.add(new TouchOnMykiStep(7, step7Location));
+
+        Location step8Location = new Location("");
+        step8Location.setLatitude(0.0);
+        step8Location.setLongitude(0.0);
+        steps.add(new WaitOnTramStep(8, 30, step7Location));
+
+        Location step9Location = new Location("");
+        step9Location.setLatitude(0.0);
+        step9Location.setLongitude(0.0);
+        steps.add(new TouchOffMykiStep(9, step9Location));
+
+        Location step10Location = new Location("");
+        step10Location.setLatitude(0.0);
+        step10Location.setLongitude(0.0);
+        steps.add(new GetOffTramStep(10, step10Location));
+
+        Location step11Location = new Location("");
+        step11Location.setLatitude(-37.809555);
+        step11Location.setLongitude(144.963901);
+        steps.add(new WalkingStep(11, step11Location));
+
+        Location step12Location = new Location("");
+        step12Location.setLatitude(-37.809596);
+        step12Location.setLongitude(144.963734);
+        steps.add(new CrossRoadStep(12, step12Location));
+
+        Location step13Location = new Location("");
+        step13Location.setLatitude(-37.808093);
+        step13Location.setLongitude(144.963032);
+        steps.add(new WalkingStep(13, step13Location));
+    }
+
 
     private class Timer implements Runnable {
         @Override
