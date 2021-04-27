@@ -27,5 +27,9 @@ public abstract class StoryboardStep {
         return this.step_number;
     }
 
+    public Location get_location() {
+        return this.location;
+    }
+
     public abstract void update();
 }

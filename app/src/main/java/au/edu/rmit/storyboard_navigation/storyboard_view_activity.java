@@ -117,7 +117,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.getSupportActionBar().hide();
 
-        scheduledThreadPoolExecutor.scheduleAtFixedRate(timer, 5, 5, TimeUnit.SECONDS);
+       // scheduledThreadPoolExecutor.scheduleAtFixedRate(timer, 5, 5, TimeUnit.SECONDS);
         setContentView(R.layout.activity_storyboard_view_activity);
 
         TextView view = (TextView) this.findViewById(R.id.destination_text_id);
@@ -132,7 +132,6 @@ public class storyboard_view_activity extends AppCompatActivity {
 
     public void update(boolean increment) {
         Log.i("SBUpdate", "Updating");
-
 
         if (increment) {
             //this.handler.postDelayed(updateStoryboardView, 1000);
@@ -198,7 +197,7 @@ public class storyboard_view_activity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.update(true);
+            //this.update(true);
         }
 
         return false;
@@ -250,6 +249,18 @@ public class storyboard_view_activity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     Log.i("SBN-Location", "Latitude: " + location.getLatitude() + "\tLongitude: " + location.getLongitude() + "\tAccuracy: " + location.getAccuracy());
                     currentLocation = location;
+
+                    boolean increment = false;
+
+                    if (currentLocation != null) {
+                        float distance = currentLocation.distanceTo(steps.get(counter).get_location());
+                        Log.i("SBN-Location", String.valueOf(distance));
+                        if (distance < 5) {
+                            increment = true;
+                        }
+                    }
+
+                    update(increment);
                 }
             }
         };
@@ -330,9 +341,19 @@ public class storyboard_view_activity extends AppCompatActivity {
     private class Timer implements Runnable {
         @Override
         public void run() {
-            Log.i("AA", "AA");
-            update(false);
-            Log.i("AA", "BB");
+            boolean increment = false;
+
+            if (currentLocation != null) {
+                float distance = currentLocation.distanceTo(steps.get(counter).get_location());
+                Log.i("SBN-Location", String.valueOf(distance));
+                if (distance < 5) {
+                    increment = true;
+                }
+            }
+
+           // Log.i("AA", "AA");
+            update(increment);
+            //Log.i("AA", "BB");
         }
     }
 }
