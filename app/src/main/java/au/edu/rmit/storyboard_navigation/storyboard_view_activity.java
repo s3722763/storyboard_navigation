@@ -245,7 +245,7 @@ public class storyboard_view_activity extends AppCompatActivity {
                 if (locationResult == null) {
                     return;
                 }
-
+                Log.i("SBN-Location", "Number of location updates " + locationResult.getLocations().size());
                 for (Location location : locationResult.getLocations()) {
                     Log.i("SBN-Location", "Latitude: " + location.getLatitude() + "\tLongitude: " + location.getLongitude() + "\tAccuracy: " + location.getAccuracy());
                     currentLocation = location;
@@ -255,7 +255,8 @@ public class storyboard_view_activity extends AppCompatActivity {
                     if (currentLocation != null) {
                         float distance = currentLocation.distanceTo(steps.get(counter).get_location());
                         Log.i("SBN-Location", String.valueOf(distance));
-                        if (distance < 5) {
+                        float within = Math.min(2 * location.getAccuracy(), 20);
+                        if (distance < within) {
                             increment = true;
                         }
                     }
