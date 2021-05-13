@@ -6,5 +6,6 @@
         <domain includeSubdomains="true">routing.openstreetmap.de</domain>
         <domain includeSubdomains="true">www.openstreetmap.org</domain>
         <domain includeSubdomains="true">router.project-osrm.org</domain>
+        <domain includeSubdomains="true">nominatim.openstreetmap.org</domain>
     </domain-config>
 </network-security-config>

@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import au.edu.rmit.storyboard_navigation.models.nominatim.SearchResponce;
 import au.edu.rmit.storyboard_navigation.models.storyboard.CrossRoadStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.CrossRoadToStopStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.GetOffTramStep;
@@ -55,6 +56,7 @@ import au.edu.rmit.storyboard_navigation.models.storyboard.WaitOnTramStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WalkingStep;
 import au.edu.rmit.storyboard_navigation.work.GenerateStoryboardRoute;
+import au.edu.rmit.storyboard_navigation.work.GetLocationFromName;
 import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
@@ -136,12 +138,16 @@ public class storyboard_view_activity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
+                        GetLocationFromName getLocationFromName = new GetLocationFromName();
+                        List<SearchResponce> fromResponse = getLocationFromName.get("Melbourne Museum");
+                        List<SearchResponce> toResponse = getLocationFromName.get("RMIT Building 80");
+
                         Location startLocation = new Location("");
-                        startLocation.setLatitude(-37.803520f);
-                        startLocation.setLongitude(144.971207f);
+                        startLocation.setLatitude(fromResponse.get(0).getLat());
+                        startLocation.setLongitude(fromResponse.get(0).getLon());
                         Location endLocation = new Location("");
-                        endLocation.setLatitude(-37.8082348f);
-                        endLocation.setLongitude(144.9630738f);
+                        endLocation.setLatitude(toResponse.get(0).getLat());
+                        endLocation.setLongitude(toResponse.get(0).getLon());
 
                         steps = generateStoryboardRoute.run(startLocation, endLocation);
                     } catch (IOException e) {
