@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +54,7 @@ import au.edu.rmit.storyboard_navigation.models.storyboard.TouchOnMykiStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitOnTramStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WaitStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.WalkingStep;
+import au.edu.rmit.storyboard_navigation.work.GenerateStoryboardRoute;
 import au.edu.rmit.storyboard_navigation.work.TaskRunner;
 import au.edu.rmit.storyboard_navigation.work.UpdateStoryboardView;
 
@@ -109,7 +111,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         taskRunner = new TaskRunner();
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
         timer = new Timer();
-        setupSteps();
+        //setupSteps();
     }
 
     @Override
@@ -127,6 +129,32 @@ public class storyboard_view_activity extends AppCompatActivity {
         exit_arrow_button.setImageResource(R.drawable.arrow);
 
         setupLocation();
+        GenerateStoryboardRoute generateStoryboardRoute = new GenerateStoryboardRoute();
+        try {
+            Thread thread;
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Location startLocation = new Location("");
+                        startLocation.setLatitude(-37.803520f);
+                        startLocation.setLongitude(144.971207f);
+                        Location endLocation = new Location("");
+                        endLocation.setLatitude(-37.8082348f);
+                        endLocation.setLongitude(144.9630738f);
+
+                        steps = generateStoryboardRoute.run(startLocation, endLocation);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+            thread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.update(false);
     }
 
@@ -197,7 +225,7 @@ public class storyboard_view_activity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //this.update(true);
+            this.update(true);
         }
 
         return false;
@@ -275,12 +303,12 @@ public class storyboard_view_activity extends AppCompatActivity {
         Location step1Location = new Location("");
         step1Location.setLatitude(-37.804507);
         step1Location.setLongitude(144.973703);
-        steps.add(new WalkingStep(1, step1Location));
+        steps.add(new WalkingStep(1, "", step1Location));
 
         Location step2Location = new Location("");
         step2Location.setLatitude(-37.807688);
         step2Location.setLongitude(144.973124);
-        steps.add(new WalkingStep(2, step2Location));
+        steps.add(new WalkingStep(2, "", step2Location));
 
         Location step3Location = new Location("");
         step3Location.setLatitude(-37.807715);
@@ -325,7 +353,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         Location step11Location = new Location("");
         step11Location.setLatitude(-37.809555);
         step11Location.setLongitude(144.963901);
-        steps.add(new WalkingStep(11, step11Location));
+        steps.add(new WalkingStep(11, "", step11Location));
 
         Location step12Location = new Location("");
         step12Location.setLatitude(-37.809596);
@@ -335,7 +363,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         Location step13Location = new Location("");
         step13Location.setLatitude(-37.808093);
         step13Location.setLongitude(144.963032);
-        steps.add(new WalkingStep(13, step13Location));
+        steps.add(new WalkingStep(13, "", step13Location));
     }
 
 

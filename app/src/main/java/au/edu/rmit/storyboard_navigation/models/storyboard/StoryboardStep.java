@@ -4,8 +4,8 @@ import android.location.Location;
 
 public abstract class StoryboardStep {
     final int step_number;
-    final int pictogram_resource_id;
-    final String details;
+    int pictogram_resource_id;
+    String details;
     final Location location;
 
     protected StoryboardStep(int step_number, int pictogram_resource_id, String details, Location location) {
