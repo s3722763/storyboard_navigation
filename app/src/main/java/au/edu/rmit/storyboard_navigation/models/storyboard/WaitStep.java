@@ -1,6 +1,7 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
 import android.location.Location;
+import android.os.Parcel;
 import android.util.Log;
 
 import java.time.Duration;
@@ -46,4 +47,43 @@ public class WaitStep extends StoryboardStep {
         arrivalPrediction = data.getResponseObject().get(0);
         Log.i("WaitStepUpdate", "Tram number: " + String.valueOf(arrivalPrediction.getVehicleNo()));
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.stopNo);
+        dest.writeInt(this.routeNo);
+        dest.writeParcelable(this.arrivalPrediction, flags);
+    }
+
+    public void readFromParcel(Parcel source) {
+        super.readFromParcel(source);
+        this.stopNo = source.readInt();
+        this.routeNo = source.readInt();
+        this.arrivalPrediction = source.readParcelable(ArrivalPrediction.class.getClassLoader());
+    }
+
+    protected WaitStep(Parcel in) {
+        super(in);
+        this.stopNo = in.readInt();
+        this.routeNo = in.readInt();
+        this.arrivalPrediction = in.readParcelable(ArrivalPrediction.class.getClassLoader());
+    }
+
+    public static final Creator<WaitStep> CREATOR = new Creator<WaitStep>() {
+        @Override
+        public WaitStep createFromParcel(Parcel source) {
+            return new WaitStep(source);
+        }
+
+        @Override
+        public WaitStep[] newArray(int size) {
+            return new WaitStep[size];
+        }
+    };
 }

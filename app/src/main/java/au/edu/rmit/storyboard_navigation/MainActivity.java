@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void openGenerateRouteActivity(View view) {
+        Intent intent = new Intent(MainActivity.this, generate_route.class);
+        this.startActivity(intent);
+    }
+
     public void openStoryboardView(View view) {
         Button button_pushed = (Button)view;
         CharSequence text = button_pushed.getText();

@@ -17,7 +17,7 @@ import au.edu.rmit.storyboard_navigation.models.ptv.PTVRouteStop;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 
 public class GenerateStoryboardRoute {
-    public List<StoryboardStep> run(Location startLocation, Location endLocation) throws IOException {
+    public void run(Location startLocation, Location endLocation, List<StoryboardStep> steps) throws IOException {
         GetNearestStops getNearestStops = new GetNearestStops();
         NearestStopRequest response = getNearestStops.get(startLocation);
 
@@ -135,7 +135,7 @@ public class GenerateStoryboardRoute {
             }
         }
 
-        List<StoryboardStep> steps = new ArrayList<>();
+        steps.clear();
 
         int start_step = 1;
         for (Route r : shortestRoute) {
@@ -144,7 +144,5 @@ public class GenerateStoryboardRoute {
             //Log.i("SBN-AutoGen", step.get_details());
             steps.addAll(r.getRoute());
         }
-
-        return steps;
     }
 }

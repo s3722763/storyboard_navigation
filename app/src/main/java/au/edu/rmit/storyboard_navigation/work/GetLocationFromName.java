@@ -1,5 +1,7 @@
 package au.edu.rmit.storyboard_navigation.work;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -24,6 +26,7 @@ public class GetLocationFromName {
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("accept", "application/json");
+            Log.i("SBNAutoGen", "Making request to nominatim: " + urlString);
             InputStream responseStream = new BufferedInputStream(connection.getInputStream());
 
             JavaType search_collection = mapper.getTypeFactory().constructCollectionType(ArrayList.class, SearchResponce.class);

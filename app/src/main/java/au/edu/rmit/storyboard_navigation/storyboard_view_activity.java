@@ -1,6 +1,7 @@
 package au.edu.rmit.storyboard_navigation;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -131,7 +132,7 @@ public class storyboard_view_activity extends AppCompatActivity {
         exit_arrow_button.setImageResource(R.drawable.arrow);
 
         setupLocation();
-        GenerateStoryboardRoute generateStoryboardRoute = new GenerateStoryboardRoute();
+        /*GenerateStoryboardRoute generateStoryboardRoute = new GenerateStoryboardRoute();
         try {
             Thread thread;
             thread = new Thread(new Runnable() {
@@ -160,7 +161,14 @@ public class storyboard_view_activity extends AppCompatActivity {
             thread.join();
         } catch (Exception e) {
             e.printStackTrace();
+        }*/
+
+        if (this.getIntent().hasExtra("storyboard")) {
+            this.steps = this.getIntent().getParcelableArrayListExtra("storyboard");
+        } else {
+            setupSteps();
         }
+
         this.update(false);
     }
 

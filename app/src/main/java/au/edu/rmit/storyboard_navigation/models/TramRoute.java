@@ -104,9 +104,9 @@ public class TramRoute implements Route {
         steps.add(new GetOnTramStep(start_step++, route_number, start_stop_location));
         steps.add(new TouchOnMykiStep(start_step++, null));
         steps.add(new WaitOnTramStep(start_step++, route_number, null));
-        steps.add(new PressStopButtonStep(start_step++, null));
-        steps.add(new TouchOffMykiStep(start_step++, null));
-        steps.add(new GetOffTramStep(start_step, null));
+        steps.add(new PressStopButtonStep(start_step++, end_stop_location));
+        steps.add(new TouchOffMykiStep(start_step++, end_stop_location));
+        steps.add(new GetOffTramStep(start_step, end_stop_location));
     }
 
     @Override
