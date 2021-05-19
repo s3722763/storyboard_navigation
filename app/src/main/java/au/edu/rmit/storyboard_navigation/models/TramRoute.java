@@ -60,7 +60,7 @@ public class TramRoute implements Route {
     }
 
     @Override
-    public void createRoute() {
+    public void createRoute(int start_step) {
         this.steps = new ArrayList<>();
 
         // This can fail as some route numbers contain a letter.
@@ -100,13 +100,13 @@ public class TramRoute implements Route {
             }
         }
 
-        steps.add(new WaitStep(1, start_stop_id, route_number, start_stop_location));
-        steps.add(new GetOnTramStep(2, route_number, start_stop_location));
-        steps.add(new TouchOnMykiStep(3, null));
-        steps.add(new WaitOnTramStep(4, route_number, null));
-        steps.add(new PressStopButtonStep(5, null));
-        steps.add(new TouchOffMykiStep(5, null));
-        steps.add(new GetOffTramStep(6, null));
+        steps.add(new WaitStep(start_step++, start_stop_id, route_number, start_stop_location));
+        steps.add(new GetOnTramStep(start_step++, route_number, start_stop_location));
+        steps.add(new TouchOnMykiStep(start_step++, null));
+        steps.add(new WaitOnTramStep(start_step++, route_number, null));
+        steps.add(new PressStopButtonStep(start_step++, null));
+        steps.add(new TouchOffMykiStep(start_step++, null));
+        steps.add(new GetOffTramStep(start_step, null));
     }
 
     @Override

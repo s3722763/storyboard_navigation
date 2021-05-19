@@ -137,13 +137,12 @@ public class GenerateStoryboardRoute {
 
         List<StoryboardStep> steps = new ArrayList<>();
 
+        int start_step = 1;
         for (Route r : shortestRoute) {
-            r.createRoute();
-
-            for (StoryboardStep step : r.getRoute()) {
-                //Log.i("SBN-AutoGen", step.get_details());
-                steps.add(step);
-            }
+            r.createRoute(start_step);
+            start_step = start_step + r.getRoute().size() + 1;
+            //Log.i("SBN-AutoGen", step.get_details());
+            steps.addAll(r.getRoute());
         }
 
         return steps;

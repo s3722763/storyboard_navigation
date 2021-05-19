@@ -32,13 +32,13 @@ public class WalkRoute implements Route {
     }
 
     @Override
-    public void createRoute() {
+    public void createRoute(int start_step) {
         System.out.printf("Getting route from: %s to %s%n", this.startLocation, this.endLocation);
 
         OSRMGetRoute osrmGetRoute = new OSRMGetRoute();
         OSRMGetRouteResponse osrmGetRouteResponse = osrmGetRoute.get(this.startLocation, this.endLocation);
         this.osrmRoute = osrmGetRouteResponse.getRoutes().get(0);
-        int starting_step = 1;
+        int starting_step = start_step;
 
         for (Leg leg : this.osrmRoute.getLegs()) {
             for (Step step : leg.getSteps()) {
@@ -66,21 +66,23 @@ public class WalkRoute implements Route {
                         Location location = new Location("");
                         location.setLatitude(maneuver.getLocation()[0]);
                         location.setLongitude(maneuver.getLocation()[1]);
-                        TurnStep turnStep = new TurnStep(starting_step++, turn_left, location);
-                        this.steps.add(turnStep);
-                        OSRMGetNearestStreetName osrmGetNearestStreetName = new OSRMGetNearestStreetName();
 
+                        OSRMGetNearestStreetName osrmGetNearestStreetName = new OSRMGetNearestStreetName();
                         OSRMNearest nearest = osrmGetNearestStreetName.get(location);
 
                         String street_name = nearest.getWaypoints().get(0).getName();
                         WalkingStep walkingStep = new WalkingStep(starting_step++, street_name, location);
                         this.steps.add(walkingStep);
+
+                        TurnStep turnStep = new TurnStep(starting_step++, turn_left, location);
+                        this.steps.add(turnStep);
                         break;
                     }
                     case "fork": {
                         Location location = new Location("");
                         location.setLatitude(maneuver.getLocation()[0]);
                         location.setLongitude(maneuver.getLocation()[1]);
+                        WalkingStep walkingStep = new WalkingStep(starting_step++, "", location);
                         ForkStep forkStep = new ForkStep(starting_step++, maneuver.getModifier(), location);
                         this.steps.add(forkStep);
                         break;
@@ -112,12 +114,14 @@ public class WalkRoute implements Route {
                         Location location = new Location("");
                         location.setLatitude(maneuver.getLocation()[0]);
                         location.setLongitude(maneuver.getLocation()[1]);
+                        WalkingStep walkingStep = new WalkingStep(starting_step++, "", location);
+                        this.steps.add(walkingStep);
                         TurnStep turnStep = new TurnStep(starting_step++, turn_left, location);
                         this.steps.add(turnStep);
                         break;
                     }
                     default:
-                        System.out.println(step.getManeuver().getType() + ": " + step.getManeuver().getModifier());
+                        Log.e("SBNAutoGen", "Step now implemented: " + step.getManeuver().getType() + ": " + step.getManeuver().getModifier());
                         break;
                 }
             }

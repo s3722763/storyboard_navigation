@@ -286,7 +286,7 @@ public class storyboard_view_activity extends AppCompatActivity {
 
                     boolean increment = false;
 
-                    if (currentLocation != null) {
+                    if (steps.get(counter).get_location() != null) {
                         float distance = currentLocation.distanceTo(steps.get(counter).get_location());
                         Log.i("SBN-Location", String.valueOf(distance));
                         float within = Math.min(2 * location.getAccuracy(), 20);

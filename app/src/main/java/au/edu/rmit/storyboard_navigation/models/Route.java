@@ -12,5 +12,5 @@ public interface Route {
 
     public Location getStartLocation();
     public Location getEndLocation();
-    public void createRoute();
+    public void createRoute(int start_step);
 }
