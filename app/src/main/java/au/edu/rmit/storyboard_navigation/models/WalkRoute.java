@@ -1,6 +1,7 @@
 package au.edu.rmit.storyboard_navigation.models;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class WalkRoute implements Route {
                 switch (maneuver.getType()) {
                     case "depart":
                         // Turn direction
+                        Log.e("SBNAutoGen", "Depart not impemented for step generation");
                         break;
                     case "turn": {
                         boolean turn_left = false;
@@ -55,7 +57,7 @@ public class WalkRoute implements Route {
                         } else if (maneuver.getModifier().equals("right")) {
                             turn_left = false;
                         } else {
-                            System.err.println("Unspecified turn condition: " + maneuver.getModifier());
+                            Log.e("SBNAutoGen", "Unspecified turn condition: " + maneuver.getModifier());
                         }
                         Location location = new Location("");
                         location.setLatitude(maneuver.getLocation()[0]);
@@ -94,7 +96,7 @@ public class WalkRoute implements Route {
                         break;
                     }
                     case "end of road": {
-                        System.err.println("End of road step unimplemented");
+                        Log.e("SBNAutoGen", "End of road step unimplemented");
                         break;
                     }
                     default:

@@ -13,7 +13,7 @@ import au.edu.rmit.storyboard_navigation.models.WalkRoute;
 import au.edu.rmit.storyboard_navigation.models.ptv.NearestStop;
 import au.edu.rmit.storyboard_navigation.models.ptv.NearestStopRequest;
 import au.edu.rmit.storyboard_navigation.models.ptv.PTVRoute;
-import au.edu.rmit.storyboard_navigation.models.ptv.PTVStop;
+import au.edu.rmit.storyboard_navigation.models.ptv.PTVRouteStop;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 
 public class GenerateStoryboardRoute {
@@ -47,12 +47,12 @@ public class GenerateStoryboardRoute {
             for (PTVRoute route : stop.getRoute()) {
                 int route_id = route.getRoute_id();
                 //Log.i("SBN-AutoGen", route_id);
-                ArrayList<PTVStop> stops = getStops.get(route_id).getStops();
+                ArrayList<PTVRouteStop> stops = getStops.get(route_id).getStops();
 
                 int index = -1;
 
                 for (int i = 0; i < stops.size(); i++) {
-                    PTVStop routeStop = stops.get(i);
+                    PTVRouteStop routeStop = stops.get(i);
                     // TODO: Check order of stops
                     if (routeStop.getStop_id() == stop.getStop_id()) {
                         index = i;
@@ -60,8 +60,8 @@ public class GenerateStoryboardRoute {
                     }
                 }
 
-                PTVStop originalStop = stops.get(index);
-                PTVStop targetStop = stops.get(index);
+                PTVRouteStop originalStop = stops.get(index);
+                PTVRouteStop targetStop = stops.get(index);
                 // Number of stops getting further from the destination
                 // This tries to account for routes were the tram will go further away before coming back closer
                 int num_stop_getting_further = 0;
@@ -77,7 +77,7 @@ public class GenerateStoryboardRoute {
                     float distance_to_destination = targetLocation.distanceTo(endLocation);
 
                     for (int i = ++index; i < stops.size(); i++) {
-                        PTVStop nextStop = stops.get(i);
+                        PTVRouteStop nextStop = stops.get(i);
                         Location nextStopLocation = new Location("");
                         nextStopLocation.setLatitude(nextStop.getStop_latitude());
                         nextStopLocation.setLongitude(nextStop.getStop_longitude());
@@ -98,7 +98,8 @@ public class GenerateStoryboardRoute {
                     }
                 }
 
-                if (targetLocation.distanceTo(startingLocation) != 0) {
+                // Dont want city circle trams
+                if (targetLocation.distanceTo(startingLocation) != 0 && !route.getRoute_name().contains("City Circle")) {
                     // TODO: Change for multiple potential routes
                     float distance_to_end = targetLocation.distanceTo(endLocation);
                     float tram_distance = targetLocation.distanceTo(startingLocation);
@@ -114,14 +115,14 @@ public class GenerateStoryboardRoute {
                         System.out.printf("Getting route from: %s to %s%n", startingLocation, targetLocation);
                         System.out.printf("Getting route from: %s to %s%n", targetLocation, endLocation);*/
                         shortestRoute.add(new WalkRoute(startLocation, toLocation));
-                        shortestRoute.add(new TramRoute(originalStop, targetStop, startingLocation, targetLocation, route.getRoute_number()));
+                        shortestRoute.add(new TramRoute(originalStop, targetStop, startingLocation, targetLocation, route));
                         shortestRoute.add(new WalkRoute(targetLocation, endLocation));
                     } else if (total_distance < shortest_route_distance) {
                         Log.i("SBN-AutoGen", "Yes");
                         shortest_route_distance = total_distance;
                         shortestRoute.clear();
                         shortestRoute.add(new WalkRoute(startLocation, toLocation));
-                        shortestRoute.add(new TramRoute(originalStop, targetStop, startingLocation, targetLocation, route.getRoute_number()));
+                        shortestRoute.add(new TramRoute(originalStop, targetStop, startingLocation, targetLocation, route));
                         shortestRoute.add(new WalkRoute(targetLocation, endLocation));
                     } else {
                         Log.i("SBN-AutoGen", "No");

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties({"disruption_ids", "stop_ticket"})
-public class PTVStop {
+public class PTVRouteStop {
     @JsonProperty("stop_suburb")
     private String stop_suburb;
     @JsonProperty("route_type")

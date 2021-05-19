@@ -1,6 +1,7 @@
 package au.edu.rmit.storyboard_navigation.models.storyboard;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -39,9 +40,10 @@ public class WaitStep extends StoryboardStep {
     public void update() {
         ArrivalPredictionTask task = new ArrivalPredictionTask(this.stopNo, this.routeNo);
 
-        TramTrackerResponse<ArrayList<ArrivalPrediction>> data = task.get();
+        TramTrackerResponse<ArrayList<ArrivalPrediction>> data;
+        data = task.get();
 
         arrivalPrediction = data.getResponseObject().get(0);
-       System.out.println("Tram number: " + String.valueOf(arrivalPrediction.getVehicleNo()));
+        Log.i("WaitStepUpdate", "Tram number: " + String.valueOf(arrivalPrediction.getVehicleNo()));
     }
 }

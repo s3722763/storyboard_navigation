@@ -8,9 +8,9 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(value = { "disruptions", "geopath", "status" })
 public class GetStopsOnRouteResponse {
     @JsonProperty("stops")
-    private ArrayList<PTVStop> stops;
+    private ArrayList<PTVRouteStop> stops;
 
-    public ArrayList<PTVStop> getStops() {
+    public ArrayList<PTVRouteStop> getStops() {
         return stops;
     }
 }
