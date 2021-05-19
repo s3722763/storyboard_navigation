@@ -56,6 +56,10 @@ public class WalkRoute implements Route {
                             turn_left = true;
                         } else if (maneuver.getModifier().equals("right")) {
                             turn_left = false;
+                        } else if (maneuver.getModifier().equals("slight left")) {
+                            turn_left = true;
+                        } else if (maneuver.getModifier().equals("slight right")) {
+                            turn_left = false;
                         } else {
                             Log.e("SBNAutoGen", "Unspecified turn condition: " + maneuver.getModifier());
                         }
@@ -96,7 +100,20 @@ public class WalkRoute implements Route {
                         break;
                     }
                     case "end of road": {
-                        Log.e("SBNAutoGen", "End of road step unimplemented");
+                        boolean turn_left = false;
+
+                        if (maneuver.getModifier().equals("left")) {
+                            turn_left = true;
+                        } else if (maneuver.getModifier().equals("right")) {
+                            turn_left = false;
+                        } else {
+                            Log.e("SBNAutoGen", "Unspecified turn condition for end of road: " + maneuver.getModifier());
+                        }
+                        Location location = new Location("");
+                        location.setLatitude(maneuver.getLocation()[0]);
+                        location.setLongitude(maneuver.getLocation()[1]);
+                        TurnStep turnStep = new TurnStep(starting_step++, turn_left, location);
+                        this.steps.add(turnStep);
                         break;
                     }
                     default:
