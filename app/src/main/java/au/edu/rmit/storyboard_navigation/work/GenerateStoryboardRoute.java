@@ -34,13 +34,6 @@ public class GenerateStoryboardRoute {
 
             float distance_to_first_stop = toLocation.distanceTo(startLocation);
 
-            //OSRMGetRouteResponse osrmGetRouteResponse = osrmGetRoute.get(fromLocation, toLocation);
-            //WalkRoute walkRoute = new WalkRoute(osrmGetRouteResponse.getRoutes().get(0).getDistance(), fromLocation, toLocation);
-            //walkRoute.createRoute(osrmGetRouteResponse.getRoutes().get(0));
-            /*for (Step step : osrmGetRouteResponse.getRoutes().get(0).getLegs().get(0).getSteps()) {
-                Log.i("SBN-AutoGen", step.getManeuver().getLocation()[1] + "," + step.getManeuver().getLocation()[0]);
-            }*/
-
             GetStopsOnRoute getStops = new GetStopsOnRoute();
 
             //Log.i("SBN-AutoGen", toLocation.getDistance(fromLocation));
@@ -76,7 +69,7 @@ public class GenerateStoryboardRoute {
                 if (index >= 0) {
                     float distance_to_destination = targetLocation.distanceTo(endLocation);
 
-                    for (int i = ++index; i < stops.size(); i++) {
+                    for (int i = index; i < stops.size(); i++) {
                         PTVRouteStop nextStop = stops.get(i);
                         Location nextStopLocation = new Location("");
                         nextStopLocation.setLatitude(nextStop.getStop_latitude());
@@ -92,10 +85,12 @@ public class GenerateStoryboardRoute {
                             num_stop_getting_further += 1;
                         }
 
-                        if (num_stop_getting_further >= 3) {
+                        if (num_stop_getting_further >= 8) {
                             break;
                         }
                     }
+
+                    index += 1;
                 }
 
                 // Dont want city circle trams
