@@ -7,10 +7,10 @@ import au.edu.rmit.storyboard_navigation.R;
 
 public class TurnStep extends StoryboardStep {
     public TurnStep(int step_number, boolean left_turn, Location location) {
-        super(step_number, R.drawable.walkpictogram, "Turn right", location);
+        super(step_number, R.drawable.turnrightpictogram, "Turn right", location);
 
         if (left_turn) {
-            this.pictogram_resource_id = R.drawable.walkpictogram;
+            this.pictogram_resource_id = R.drawable.turnleftpictogram;
             this.details = "Turn left";
         }
     }

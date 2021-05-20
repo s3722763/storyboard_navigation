@@ -1,5 +1,6 @@
 package au.edu.rmit.storyboard_navigation;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +21,7 @@ import au.edu.rmit.storyboard_navigation.work.GenerateStoryboardRoute;
 import au.edu.rmit.storyboard_navigation.work.GetLocationFromName;
 
 public class generate_route extends AppCompatActivity {
+    private final int SHOW_STORYBOARD_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,16 @@ public class generate_route extends AppCompatActivity {
         thread.join();
         Intent intent = new Intent(generate_route.this, storyboard_view_activity.class);
         intent.putParcelableArrayListExtra("storyboard", steps);
-        this.startActivity(intent);
+        intent.putExtra("route_name", from + " to " + to);
+        this.startActivityForResult(intent, SHOW_STORYBOARD_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SHOW_STORYBOARD_CODE) {
+            this.finish();
+        }
     }
 }

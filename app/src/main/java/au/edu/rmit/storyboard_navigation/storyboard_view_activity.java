@@ -132,36 +132,6 @@ public class storyboard_view_activity extends AppCompatActivity {
         exit_arrow_button.setImageResource(R.drawable.arrow);
 
         setupLocation();
-        /*GenerateStoryboardRoute generateStoryboardRoute = new GenerateStoryboardRoute();
-        try {
-            Thread thread;
-            thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        GetLocationFromName getLocationFromName = new GetLocationFromName();
-                        List<SearchResponce> fromResponse = getLocationFromName.get("Melbourne Museum");
-                        List<SearchResponce> toResponse = getLocationFromName.get("RMIT Building 80");
-
-                        Location startLocation = new Location("");
-                        startLocation.setLatitude(fromResponse.get(0).getLat());
-                        startLocation.setLongitude(fromResponse.get(0).getLon());
-                        Location endLocation = new Location("");
-                        endLocation.setLatitude(toResponse.get(0).getLat());
-                        endLocation.setLongitude(toResponse.get(0).getLon());
-
-                        steps = generateStoryboardRoute.run(startLocation, endLocation);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            thread.start();
-            thread.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
         if (this.getIntent().hasExtra("storyboard")) {
             this.steps = this.getIntent().getParcelableArrayListExtra("storyboard");
