@@ -31,7 +31,7 @@ public class WaitStep extends StoryboardStep {
             ZonedDateTime predictedArrivalTime = arrivalPrediction.getPredictedArrivalDateTime().getDatetime();
             Instant now = Instant.now();
             Duration timeDifference = Duration.between(now, predictedArrivalTime);
-            return String.format(this.details, timeDifference.getSeconds() / 60, 1);
+            return String.format(this.details, timeDifference.getSeconds() / 60, this.routeNo);
         } else {
             return "Loading";
         }
