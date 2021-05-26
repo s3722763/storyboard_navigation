@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import au.edu.rmit.storyboard_navigation.models.Route;
 import au.edu.rmit.storyboard_navigation.models.TramRoute;
@@ -17,7 +18,7 @@ import au.edu.rmit.storyboard_navigation.models.ptv.PTVRouteStop;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 
 public class GenerateStoryboardRoute {
-    public void run(Location startLocation, Location endLocation, List<StoryboardStep> steps) throws IOException {
+    public void run(Location startLocation, Location endLocation, List<StoryboardStep> steps, AtomicInteger progress) throws IOException {
         GetNearestStops getNearestStops = new GetNearestStops();
         NearestStopRequest response = getNearestStops.get(startLocation);
 
@@ -93,6 +94,8 @@ public class GenerateStoryboardRoute {
                     index += 1;
                 }
 
+                progress.set(50);
+
                 // Dont want city circle trams
                 if (targetLocation.distanceTo(startingLocation) != 0 && !route.getRoute_name().contains("City Circle")) {
                     // TODO: Change for multiple potential routes
@@ -139,5 +142,7 @@ public class GenerateStoryboardRoute {
             //Log.i("SBN-AutoGen", step.get_details());
             steps.addAll(r.getRoute());
         }
+
+        progress.set(100);
     }
 }

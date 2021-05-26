@@ -8,12 +8,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import au.edu.rmit.storyboard_navigation.models.nominatim.SearchResponce;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
@@ -32,11 +35,18 @@ public class generate_route extends AppCompatActivity {
     public void generateRouteClick(View view) throws InterruptedException {
         String from = ((TextView)this.findViewById(R.id.fromDestinationID)).getText().toString();
         String to = ((TextView)this.findViewById(R.id.toDestinationID)).getText().toString();
+        ((Button)this.findViewById(R.id.generateRouteButton)).setClickable(false);
+
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.generateRouteProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
         Log.i("SBNGenRoute", String.format("Generating route from %s to %s", from, to));
 
         ArrayList<StoryboardStep> steps = new ArrayList<>();
 
-        Thread thread = new Thread(new Runnable() {
+        AtomicInteger progress = new AtomicInteger(0);
+
+        Thread generate_thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 GenerateStoryboardRoute generateStoryboardRoute = new GenerateStoryboardRoute();
@@ -52,19 +62,41 @@ public class generate_route extends AppCompatActivity {
                 endLocation.setLongitude(toLocations.get(0).getLon());
 
                 try {
-                    generateStoryboardRoute.run(startLocation, endLocation, steps);
+                    generateStoryboardRoute.run(startLocation, endLocation, steps, progress);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        thread.start();
-        thread.join();
-        Intent intent = new Intent(generate_route.this, storyboard_view_activity.class);
-        intent.putParcelableArrayListExtra("storyboard", steps);
-        intent.putExtra("route_name", from + " to " + to);
-        this.startActivityForResult(intent, SHOW_STORYBOARD_CODE);
+        Thread update_progress_bar_thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progress.get() < 100) {
+
+                    progressBar.setProgress(progress.get());
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                try {
+                    generate_thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(generate_route.this, storyboard_view_activity.class);
+                intent.putParcelableArrayListExtra("storyboard", steps);
+                intent.putExtra("route_name", from + " to " + to);
+                startActivityForResult(intent, SHOW_STORYBOARD_CODE);
+            }
+        });
+
+        generate_thread.start();
+        update_progress_bar_thread.start();
     }
 
     @Override
