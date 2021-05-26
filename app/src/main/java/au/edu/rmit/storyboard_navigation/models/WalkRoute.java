@@ -126,7 +126,7 @@ public class WalkRoute implements Route {
 
                         String street_name = nearest.getWaypoints().get(0).getName();
 
-                        WalkingStep walkStep = new WalkingStep(starting_step++, street_name, location);
+                        WalkingStep walkStep = new WalkingStep(starting_step++, " along " + street_name, location);
 
                         this.steps.add(walkStep);
                         break;
