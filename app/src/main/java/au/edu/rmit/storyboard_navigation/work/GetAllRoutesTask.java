@@ -1,11 +1,8 @@
-package au.edu.rmit.storyboard_navigation.task;
-
-import android.util.Log;
+package au.edu.rmit.storyboard_navigation.work;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +15,7 @@ import au.edu.rmit.storyboard_navigation.models.tramtracker.RouteInfo;
 import au.edu.rmit.storyboard_navigation.models.tramtracker.TramTrackerResponse;
 
 public class GetAllRoutesTask implements Callable<TramTrackerResponse<ArrayList<RouteInfo>>> {
-    public  TramTrackerResponse<ArrayList<RouteInfo>> get() {
+    public TramTrackerResponse<ArrayList<RouteInfo>> get() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new Jdk8Module());
 
@@ -33,7 +30,7 @@ public class GetAllRoutesTask implements Callable<TramTrackerResponse<ArrayList<
 
             return mapper.readValue(responseStream, type);
         } catch (IOException e) {
-            Log.e("storyboard_navi_msg", e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         return null;
