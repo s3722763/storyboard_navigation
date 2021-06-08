@@ -3,6 +3,7 @@ package au.edu.rmit.storyboard_navigation;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,12 +13,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import au.edu.rmit.storyboard_navigation.exceptions.AutoGenerateRouteException;
 import au.edu.rmit.storyboard_navigation.models.nominatim.SearchResponce;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 import au.edu.rmit.storyboard_navigation.work.GenerateStoryboardRoute;
@@ -65,6 +70,10 @@ public class generate_route extends AppCompatActivity {
                     generateStoryboardRoute.run(startLocation, endLocation, steps, progress);
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (AutoGenerateRouteException e) {
+                    CharSequence charSequence = e.reason;
+                    Snackbar snackbar = Snackbar.make(view, charSequence, BaseTransientBottomBar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });

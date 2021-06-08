@@ -1,5 +1,6 @@
 package au.edu.rmit.storyboard_navigation.work;
 
+import android.app.Dialog;
 import android.location.Location;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import au.edu.rmit.storyboard_navigation.exceptions.AutoGenerateRouteException;
 import au.edu.rmit.storyboard_navigation.models.Route;
 import au.edu.rmit.storyboard_navigation.models.TramRoute;
 import au.edu.rmit.storyboard_navigation.models.WalkRoute;
@@ -18,13 +20,17 @@ import au.edu.rmit.storyboard_navigation.models.ptv.PTVRouteStop;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 
 public class GenerateStoryboardRoute {
-    public void run(Location startLocation, Location endLocation, List<StoryboardStep> steps, AtomicInteger progress) throws IOException {
+    public void run(Location startLocation, Location endLocation, List<StoryboardStep> steps, AtomicInteger progress) throws IOException, AutoGenerateRouteException {
         GetNearestStops getNearestStops = new GetNearestStops();
         NearestStopRequest response = getNearestStops.get(startLocation);
 
         Log.i("SBN-AutoGen", "Found " + response.getStops().size() + " stops");
         float shortest_route_distance = 0;
         List<Route> shortestRoute = new ArrayList<Route>();
+
+        if (response.getStops().size() == 0) {
+            throw new AutoGenerateRouteException("No stops found near you");
+        }
 
         for (NearestStop stop : response.getStops()) {
             //Log.i("SBN-AutoGen", stop.getStop_name());
@@ -138,7 +144,7 @@ public class GenerateStoryboardRoute {
         int start_step = 1;
         for (Route r : shortestRoute) {
             r.createRoute(start_step);
-            start_step = start_step + r.getRoute().size() + 1;
+            start_step = start_step + r.getRoute().size();
             //Log.i("SBN-AutoGen", step.get_details());
             steps.addAll(r.getRoute());
         }

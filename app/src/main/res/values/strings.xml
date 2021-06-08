@@ -9,4 +9,5 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="step_number_first">1</string>
+    <string name="auto_gen_error">Error</string>
 </resources>

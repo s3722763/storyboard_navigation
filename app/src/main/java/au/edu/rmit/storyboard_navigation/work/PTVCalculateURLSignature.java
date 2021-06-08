@@ -1,8 +1,11 @@
 package au.edu.rmit.storyboard_navigation.work;
 
+import android.util.Log;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Arrays;
 
 public class PTVCalculateURLSignature {
     private static final String privateKey = "d45c8eb9-bdcc-4c72-adf3-4b7be3922987";
@@ -19,6 +22,7 @@ public class PTVCalculateURLSignature {
         mac.init(signingKey);
         byte[] signatureBytes = mac.doFinal(uriBytes);
         StringBuilder signature = new StringBuilder(signatureBytes.length * 2);
+
         for (byte signatureByte : signatureBytes)
         {
             int intVal = signatureByte & 0xff;

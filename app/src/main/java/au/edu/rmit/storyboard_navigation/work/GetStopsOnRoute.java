@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import au.edu.rmit.storyboard_navigation.models.ptv.GetStopsOnRouteResponse;
 
@@ -22,7 +23,7 @@ public class GetStopsOnRoute {
 
         try {
             // Trams are route_type 1
-            String baseUrl = String.format(base_url, route_id, 1);
+            String baseUrl = String.format(Locale.US, base_url, route_id, 1);
             String urlString = PTVCalculateURLSignature.buildTTAPIURL("http://timetableapi.ptv.vic.gov.au", baseUrl);
 
             URL url = new URL(urlString);
