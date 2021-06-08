@@ -178,7 +178,7 @@ public class storyboard_view_activity extends AppCompatActivity {
             ImageView imageView = (ImageView) this.findViewById(pictogram_ids[i]);
             TextView stepDescriptionTextView = (TextView) this.findViewById(step_description_ids[i]);
 
-            if ((i + counter) < (steps.size() - 1)) {
+            if ((i + counter) < (steps.size())) {
                 StoryboardStep step = steps.get(i + counter);
 
                 stepNumberTextView.setText(String.valueOf(step.get_step_number()));

@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import au.edu.rmit.storyboard_navigation.exceptions.AutoGenerateRouteException;
 import au.edu.rmit.storyboard_navigation.models.nominatim.SearchResponce;
+import au.edu.rmit.storyboard_navigation.models.storyboard.DestinationStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 import au.edu.rmit.storyboard_navigation.work.GenerateStoryboardRoute;
 import au.edu.rmit.storyboard_navigation.work.GetLocationFromName;
@@ -68,6 +69,8 @@ public class generate_route extends AppCompatActivity {
 
                 try {
                     generateStoryboardRoute.run(startLocation, endLocation, steps, progress);
+
+                    steps.add(new DestinationStep(steps.size() + 1, to, endLocation));
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (AutoGenerateRouteException e) {

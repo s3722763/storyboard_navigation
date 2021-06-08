@@ -17,6 +17,7 @@ import au.edu.rmit.storyboard_navigation.models.ptv.NearestStop;
 import au.edu.rmit.storyboard_navigation.models.ptv.NearestStopRequest;
 import au.edu.rmit.storyboard_navigation.models.ptv.PTVRoute;
 import au.edu.rmit.storyboard_navigation.models.ptv.PTVRouteStop;
+import au.edu.rmit.storyboard_navigation.models.storyboard.DestinationStep;
 import au.edu.rmit.storyboard_navigation.models.storyboard.StoryboardStep;
 
 public class GenerateStoryboardRoute {
