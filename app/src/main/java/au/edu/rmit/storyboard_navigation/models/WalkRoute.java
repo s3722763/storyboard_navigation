@@ -95,6 +95,8 @@ public class WalkRoute implements Route {
                             details = "along " + determineStreet(nearest_from.getWaypoints(), nearest_to.getWaypoints());
                         }
 
+                        details += " for " + (int)Math.floor(step.getDistance()) + " metres";
+
                         WalkingStep walkingStep = new WalkingStep(starting_step++, details, location_to);
                         this.steps.add(walkingStep);
 
@@ -110,7 +112,7 @@ public class WalkRoute implements Route {
                         OSRMGetNearestStreetName osrmGetNearestStreetName = new OSRMGetNearestStreetName();
                         OSRMNearest nearest = osrmGetNearestStreetName.get(location);
                         String details = "to " + nearest.getWaypoints().get(0).getName();
-
+                        details += " for " + (int)Math.floor(step.getDistance()) + " metres";
                         WalkingStep walkingStep = new WalkingStep(starting_step++, details, location);
                         this.steps.add(walkingStep);
                         ForkStep forkStep = new ForkStep(starting_step++, maneuver.getModifier(), location);
@@ -126,7 +128,7 @@ public class WalkRoute implements Route {
 
                         String street_name = nearest.getWaypoints().get(0).getName();
 
-                        WalkingStep walkStep = new WalkingStep(starting_step++, " along " + street_name, location);
+                        WalkingStep walkStep = new WalkingStep(starting_step++, " along " + street_name + " for " + (int)Math.floor(step.getDistance()) + " metres", location);
 
                         this.steps.add(walkStep);
                         break;
