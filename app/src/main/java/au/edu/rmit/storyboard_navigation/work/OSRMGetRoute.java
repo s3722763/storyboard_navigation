@@ -12,12 +12,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import au.edu.rmit.storyboard_navigation.models.osrm.OSRMGetRouteResponse;
 
 public class OSRMGetRoute {
     public OSRMGetRouteResponse get(Location start, Location end) {
-        String url_str = String.format("https://routing.openstreetmap.de/routed-foot/route/v1/driving/%f,%f;%f,%f?overview=false&steps=true&alternatives=true",
+        String url_str = String.format(Locale.US, "https://routing.openstreetmap.de/routed-foot/route/v1/driving/%f,%f;%f,%f?overview=false&steps=true&alternatives=true",
                 start.getLongitude(), start.getLatitude(), end.getLongitude(), end.getLatitude());
         //System.out.println(url_str);
         ObjectMapper mapper = new ObjectMapper();

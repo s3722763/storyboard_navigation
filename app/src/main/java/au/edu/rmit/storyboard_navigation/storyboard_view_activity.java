@@ -25,14 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -185,7 +178,7 @@ public class storyboard_view_activity extends AppCompatActivity {
             ImageView imageView = (ImageView) this.findViewById(pictogram_ids[i]);
             TextView stepDescriptionTextView = (TextView) this.findViewById(step_description_ids[i]);
 
-            if ((i + counter) < (steps.size() - 1)) {
+            if ((i + counter) < (steps.size())) {
                 StoryboardStep step = steps.get(i + counter);
 
                 stepNumberTextView.setText(String.valueOf(step.get_step_number()));

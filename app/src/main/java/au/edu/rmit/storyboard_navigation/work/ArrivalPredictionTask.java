@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import au.edu.rmit.storyboard_navigation.models.tramtracker.ArrivalPrediction;
@@ -32,7 +33,7 @@ public class ArrivalPredictionTask {
         mapper.registerModule(new Jdk8Module());
 
         try {
-            String urlString = String.format(base_url, this.stopNo, this.routeNo);
+            String urlString = String.format(Locale.US, base_url, this.stopNo, this.routeNo);
             Log.i("SBNLiveUpdate", "Getting tram arrival times from: " + urlString);
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

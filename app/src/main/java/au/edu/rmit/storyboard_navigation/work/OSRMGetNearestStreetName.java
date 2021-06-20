@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import au.edu.rmit.storyboard_navigation.models.osrm.OSRMNearest;
 
@@ -21,7 +22,7 @@ public class OSRMGetNearestStreetName {
         mapper.registerModule(new Jdk8Module());
 
         try {
-            String url_str = String.format("http://router.project-osrm.org/nearest/v1/driving/%f,%f", location.getLatitude(), location.getLongitude());
+            String url_str = String.format(Locale.US, "http://router.project-osrm.org/nearest/v1/driving/%f,%f", location.getLatitude(), location.getLongitude());
             //System.out.println(url_str);
             URL url = new URL(url_str);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

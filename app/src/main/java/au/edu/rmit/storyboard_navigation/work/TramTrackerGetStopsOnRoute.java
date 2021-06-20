@@ -10,6 +10,7 @@ import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import au.edu.rmit.storyboard_navigation.models.tramtracker.StopInformation;
 import au.edu.rmit.storyboard_navigation.models.tramtracker.TramTrackerResponse;
@@ -23,7 +24,7 @@ public class TramTrackerGetStopsOnRoute {
 
         try {
             // Trams are route_type 1
-            String urlString = String.format(base_url, route_id, up);
+            String urlString = String.format(Locale.US, base_url, route_id, up);
 
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
